@@ -104,8 +104,8 @@ HIP_INCLUDE := -I $(ROOT_DIR)/csrc -I $(ROOT_DIR)/include
 HIP_LIB := -L/opt/rocm/lib -L/opt/rocm/llvm/bin/../lib/clang/15.0.0/lib/linux -L/usr/lib64 -L/lib64 -lgcc_s -lgcc -lpthread -lm -lrt -lamdhip64 -lhipblas -lhipsparse -lclang_rt.builtins-x86_64 -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc
 
 hip: $(BUILD_DIR)
-	/usr/bin/hipcc -std=c++14 -c -fPIC --amdgpu-target=gfx803 $(HIP_INCLUDE) -o $(BUILD_DIR)/ops.o -D NO_CUBLASLT $(CSRC)/ops.cu
-	/usr/bin/hipcc -std=c++14 -c -fPIC --amdgpu-target=gfx803 $(HIP_INCLUDE) -o $(BUILD_DIR)/kernels.o -D NO_CUBLASLT $(CSRC)/kernels.cu
+	hipcc -std=c++14 -c -fPIC --amdgpu-target=gfx803 $(HIP_INCLUDE) -o $(BUILD_DIR)/ops.o -D NO_CUBLASLT $(CSRC)/ops.cu
+	hipcc -std=c++14 -c -fPIC --amdgpu-target=gfx803 $(HIP_INCLUDE) -o $(BUILD_DIR)/kernels.o -D NO_CUBLASLT $(CSRC)/kernels.cu
 	# /usr/bin/hipcc -fPIC -static $(BUILD_DIR)/ops.o $(BUILD_DIR)/kernels.o -o $(BUILD_DIR)/link.so 
 	$(GPP) -std=c++14 -D__HIP_PLATFORM_AMD__ -DBUILD_CUDA -shared -fPIC -I /opt/rocm/include $(HIP_INCLUDE) $(BUILD_DIR)/ops.o $(BUILD_DIR)/kernels.o $(FILES_CPP) $(HIP_LIB) -o ./bitsandbytes/libbitsandbytes_hip_nocublaslt.so 
 
